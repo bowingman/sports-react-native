@@ -6,7 +6,7 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
-      <View style={{backgroundColor: '#CCCCCC', flex: 1, paddingTop:20}}>
+      <View style={{backgroundColor: '#CCCCCC', flex: 1}}>
         <TeamList nav={this.props.navigation} />
       </View>
     );

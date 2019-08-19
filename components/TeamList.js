@@ -26,8 +26,14 @@ export default class TeamList extends Component {
       });
   }
 
-  onPress = (name) => {
-    this.props.nav.navigate('Details', {team: name});
+  onPress = (team) => {
+    this.props.nav.navigate('Details', {
+      id: team.idTeam,
+      name: team.strTeam,
+      logo: team.strTeamBadge,
+      manager: team.strManager,
+      stadiumName: team.strStadium,
+    });
   }
 
   render() {
@@ -43,7 +49,7 @@ export default class TeamList extends Component {
       <ScrollView>
         <FlatList
           data={this.state.dataSource}
-          renderItem={({item}) => <TouchableOpacity onPress={this.onPress.bind(this, item.strTeam)}><TeamRow logoURL={item.strTeamBadge} name={item.strTeam} nav={this.props.nav}></TeamRow></TouchableOpacity>}
+          renderItem={({item}) => <TouchableOpacity onPress={this.onPress.bind(this, item)}><TeamRow logoURL={item.strTeamBadge} name={item.strTeam}></TeamRow></TouchableOpacity>}
           keyExtractor={({idTeam}, index) => idTeam}
         />
       </ScrollView>
