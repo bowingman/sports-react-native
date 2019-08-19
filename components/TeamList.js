@@ -5,7 +5,7 @@ import { ActivityIndicator, FlatList, ScrollView, View, TouchableOpacity } from 
 export default class TeamList extends Component {
   constructor(props) {
     super(props);
-    this.state = { isLoading: true }
+    this.state = { isLoading: true };
   }
 
   componentDidMount() {
@@ -26,9 +26,8 @@ export default class TeamList extends Component {
       });
   }
 
-  onPress = (team) => {
-    // TODO
-    this.props.nav.navigate('Details', {team: 'Eagles!'});
+  onPress = (name) => {
+    this.props.nav.navigate('Details', {team: name});
   }
 
   render() {
@@ -44,7 +43,7 @@ export default class TeamList extends Component {
       <ScrollView>
         <FlatList
           data={this.state.dataSource}
-          renderItem={({item}) => <TouchableOpacity onPress={this.onPress}><TeamRow logoURL={item.strTeamBadge} name={item.strTeam} nav={this.props.nav}></TeamRow></TouchableOpacity>}
+          renderItem={({item}) => <TouchableOpacity onPress={this.onPress.bind(this, item.strTeam)}><TeamRow logoURL={item.strTeamBadge} name={item.strTeam} nav={this.props.nav}></TeamRow></TouchableOpacity>}
           keyExtractor={({idTeam}, index) => idTeam}
         />
       </ScrollView>
