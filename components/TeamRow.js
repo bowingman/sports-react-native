@@ -16,7 +16,7 @@ export default class TeamRow extends Component {
               style={{width: 50, height: 50}}
               source={{uri: this.props.logoURL}}
             />
-            <Text style={{marginTop: 25, marginLeft: 10}}>{this.props.name}</Text>
+            <Text style={{marginTop: 18, marginLeft: 10}}>{this.props.name}</Text>
             {/* <AntDesign name="right" size={25}></AntDesign> */}
         </View>
     );
