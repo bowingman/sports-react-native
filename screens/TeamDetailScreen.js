@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import TeamRow from '../components/TeamRow.js';
 
+const styles = StyleSheet.create({
+  row: {
+    paddingBottom: 20,
+  },
+});
+
 export default class TeamDetailScreen extends Component {
+  static navigationOptions = {
+    title: 'Team Details',
+  };
   constructor(props) {
     super(props);
     this.state = { isLoading: true };
@@ -46,9 +55,9 @@ export default class TeamDetailScreen extends Component {
     return (
         <View style={{backgroundColor: '#CCCCCC', flex: 1}}>
             <TeamRow logoURL={logo} name={name}></TeamRow>
-            <Text style={{paddingBottom: 20}}>Manager: {manager}</Text>
-            <Text style={{paddingBottom: 20}}>Stadium: {stadiumName}</Text>
-            <Text style={{paddingBottom: 20}}>Next game is {location} verses {opponent} on {data.dateEvent}</Text>
+            <Text style={styles.row}>Manager: {manager}</Text>
+            <Text style={styles.row}>Stadium: {stadiumName}</Text>
+            <Text style={styles.row}>Next game is {location} verses {opponent} on {data.dateEvent}</Text>
         </View>
     );
   }
