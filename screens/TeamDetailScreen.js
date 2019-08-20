@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import TeamRow from '../components/TeamRow.js';
+import TeamRow from '../components/TeamRow';
 
 const styles = StyleSheet.create({
   heading: {
@@ -19,11 +19,15 @@ export default class TeamDetailScreen extends Component {
   static navigationOptions = {
     title: 'Team Details',
   };
+
   constructor(props) {
     super(props);
-    this.state = { isLoading: true };
+    this.state = { 
+      isLoadingNextGame: true,
+      // isLoadingFavorite: true,
+      // favoriteTeam: null,
+    };
   }
-
   componentDidMount() {
     const id = this.props.navigation.getParam('id', 0);
     return fetch(`https://www.thesportsdb.com/api/v1/json/1/eventsnext.php?id=${id}`)
@@ -31,8 +35,8 @@ export default class TeamDetailScreen extends Component {
       .then((responseJson) => {
 
       this.setState({
-          isLoading: false,
-          dataSource: responseJson.events[0],
+        isLoadingNextGame: false,
+        dataSource: responseJson.events[0],
       }, function(){
       });
 
@@ -40,6 +44,7 @@ export default class TeamDetailScreen extends Component {
       .catch((error) =>{
         console.error(error);
       });
+      
   }
 
   render() {
@@ -48,7 +53,8 @@ export default class TeamDetailScreen extends Component {
     const logo = nav.getParam('logo', 'No logo found');
     const manager = nav.getParam('manager', 'No manager found');
     const stadiumName = nav.getParam('stadiumName', 'No stadium found');
-    if (this.state.isLoading) {
+    const isLoading = this.state.isLoadingNextGame;
+    if (isLoading) {
       return (
         <View style={{flex: 1, padding: 20}}>
           <ActivityIndicator/>
@@ -74,6 +80,7 @@ export default class TeamDetailScreen extends Component {
             <Text style={styles.heading}>Next Game</Text>
             <Text style={styles.name}>{location} vs the {opponentName}</Text>
             <Text style={styles.name}>{dateStr}</Text>
+
         </View>
     );
   }
