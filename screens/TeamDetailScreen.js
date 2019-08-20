@@ -36,6 +36,7 @@ export default class TeamDetailScreen extends Component {
       logo,
       manager,
       stadiumName,
+      isFavorite: false,
     };
   }
 
@@ -46,6 +47,8 @@ export default class TeamDetailScreen extends Component {
     AsyncStorage.getItem('favoriteTeam', (err, result) => {
       if (result !== null) {
         this.setState({ isLoadingFavorite: false, isFavorite: JSON.parse(result).id === id });
+      } else {
+        this.setState({ isLoadingFavorite: false, isFavorite: false });
       }
     });
 
@@ -67,10 +70,17 @@ export default class TeamDetailScreen extends Component {
   }
 
   onFavorite = () => {
-    const { id, name, logo, manager, stadiumName } = this.state;
+    const { id, name, logo, manager, stadiumName, isFavorite } = this.state;
     const favorite = { id, name, logo, manager, stadiumName };
-    Alert.alert('Success', `You have set the ${name} as your favorite team`);
-    AsyncStorage.setItem('favoriteTeam', JSON.stringify(favorite));
+
+    // If this team is not your favorite, make it your favorite
+    if (!isFavorite) { 
+      Alert.alert('Success', `You have set the ${name} as your favorite team`);
+      AsyncStorage.setItem('favoriteTeam', JSON.stringify(favorite));
+    } else { // Otherwise, remove it as your favorite
+      Alert.alert('Success', `The ${name} is no longer your favorite team`);
+      AsyncStorage.removeItem('favoriteTeam');
+    }
   }
 
   render() {
@@ -82,14 +92,12 @@ export default class TeamDetailScreen extends Component {
         </View>
       );
     }
-    // TODO: Consider fragment out the static details 
     const { id, data, name, logo, manager, stadiumName, isFavorite } = this.state;
     const isHome = data.idHomeTeam === id;
     const location = isHome ? 'Home' : 'Away';
     const opponentName = isHome ? data.strAwayTeam : data.strHomeTeam;
     const date = new Date(data.dateEvent);
     const dateStr = date.toDateString();
-
     return (
         <View>
             <TeamRow 
