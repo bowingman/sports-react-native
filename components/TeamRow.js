@@ -1,7 +1,23 @@
 import React, { Component } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types';
 
-// TODO: Proptypes
+const styles = StyleSheet.create({
+  row: {
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    paddingLeft: 5,
+  },
+  image: {
+    height: 50,
+    width: 50
+  },
+  name: {
+    fontSize: 18,
+    marginTop: 16,
+    marginLeft: 10,
+  },
+});
 
 export default class TeamRow extends Component {
   constructor(props){
@@ -10,13 +26,18 @@ export default class TeamRow extends Component {
 
   render() {
     return (
-        <View style={{ paddingLeft: 5, flexDirection:"row" }}>
+        <View style={styles.row}>
             <Image
-              style={{width: 50, height: 50}}
+              style={styles.image}
               source={{uri: this.props.logoURL}}
             />
-            <Text style={{marginTop: 18, marginLeft: 10}}>{this.props.name}</Text>
+            <Text style={styles.name}>{this.props.name}</Text>
         </View>
     );
   }
 }
+
+TeamRow.propTypes = {
+  name: PropTypes.string,
+  logoURL: PropTypes.string,
+};

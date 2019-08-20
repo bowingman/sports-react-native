@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import TeamList from '../components/TeamList.js';
+
+const styles = StyleSheet.create({
+  bg: {
+    backgroundColor: '#cccccc',
+    flex: 1
+  },
+});
 
 export default class HomeScreen extends Component {
   static navigationOptions = {
@@ -8,10 +15,9 @@ export default class HomeScreen extends Component {
   };
   render() {
     return (
-      <View style={{backgroundColor: '#CCCCCC', flex: 1}}>
+      <View style={styles.bg}>
         <TeamList nav={this.props.navigation} />
       </View>
     );
   }
 }
-

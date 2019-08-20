@@ -3,8 +3,15 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import TeamRow from '../components/TeamRow.js';
 
 const styles = StyleSheet.create({
-  row: {
-    paddingBottom: 20,
+  heading: {
+    color: '#777777',
+    fontSize: 16,
+    paddingLeft: 5,
+    paddingTop: 10
+  },
+  name: {
+    fontSize: 18,
+    paddingLeft: 10
   },
 });
 
@@ -20,20 +27,20 @@ export default class TeamDetailScreen extends Component {
   componentDidMount() {
     const id = this.props.navigation.getParam('id', 0);
     return fetch(`https://www.thesportsdb.com/api/v1/json/1/eventsnext.php?id=${id}`)
-        .then((response) => response.json())
-        .then((responseJson) => {
+      .then((response) => response.json())
+      .then((responseJson) => {
 
-        this.setState({
-            isLoading: false,
-            dataSource: responseJson.events[0],
-        }, function(){
-        });
+      this.setState({
+          isLoading: false,
+          dataSource: responseJson.events[0],
+      }, function(){
+      });
 
-        })
-        .catch((error) =>{
-          console.error(error);
-        });
-    }
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
 
   render() {
     const nav = this.props.navigation;
@@ -50,14 +57,23 @@ export default class TeamDetailScreen extends Component {
     }
     const data = this.state.dataSource;
     const isHome = data.idHomeTeam === nav.getParam('id');
-    const location = isHome ? 'home' : 'away';
-    const opponent = isHome ? data.strAwayTeam : data.strHomeTeam;
+    const location = isHome ? 'Home' : 'Away';
+    const opponentName = isHome ? data.strAwayTeam : data.strHomeTeam;
+    const date = new Date(data.dateEvent);
+    const dateStr = date.toDateString();
     return (
-        <View style={{backgroundColor: '#CCCCCC', flex: 1}}>
-            <TeamRow logoURL={logo} name={name}></TeamRow>
-            <Text style={styles.row}>Manager: {manager}</Text>
-            <Text style={styles.row}>Stadium: {stadiumName}</Text>
-            <Text style={styles.row}>Next game is {location} verses {opponent} on {data.dateEvent}</Text>
+        <View>
+            <TeamRow style={styles.row} logoURL={logo} name={name}></TeamRow>
+            
+            <Text style={styles.heading}>Manager</Text>
+            <Text style={styles.name}>{manager}</Text>
+
+            <Text style={styles.heading}>Stadium</Text>
+            <Text style={styles.name}>{stadiumName}</Text>
+
+            <Text style={styles.heading}>Next Game</Text>
+            <Text style={styles.name}>{location} vs the {opponentName}</Text>
+            <Text style={styles.name}>{dateStr}</Text>
         </View>
     );
   }
