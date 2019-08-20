@@ -61,6 +61,7 @@ export default class TeamDetailScreen extends Component {
         </View>
       );
     }
+    // TODO: Consider fragment out the static details 
     const data = this.state.dataSource;
     const isHome = data.idHomeTeam === nav.getParam('id');
     const location = isHome ? 'Home' : 'Away';
@@ -69,7 +70,7 @@ export default class TeamDetailScreen extends Component {
     const dateStr = date.toDateString();
     return (
         <View>
-            <TeamRow style={styles.row} logoURL={logo} name={name}></TeamRow>
+            <TeamRow style={styles.row} logoURL={logo} name={name} showFavoriteIcon></TeamRow>
             
             <Text style={styles.heading}>Manager</Text>
             <Text style={styles.name}>{manager}</Text>

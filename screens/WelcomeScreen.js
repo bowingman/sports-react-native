@@ -20,6 +20,10 @@ export default class WelcomeScreen extends Component {
     AsyncStorage.getItem('favoriteTeam', (err, result) => {
       if (result !== null) {
         const team = JSON.parse(result);
+        // A favorite team was found in storage, so:
+          // Clear this initial loading screen from the navigation stack
+          // Add Home to stack (to allow going back)
+          // Add Details page to stack
         const resetAndGoToFavoriteTeam = StackActions.reset({
           index: 1,
           actions: [
