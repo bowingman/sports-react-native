@@ -32,7 +32,7 @@ export default class TeamList extends Component {
       name: team.strTeam,
       logo: team.strTeamBadge,
       manager: team.strManager,
-      stadiumName: team.strStadium,
+      stadium: team.strStadium,
     });
   }
 

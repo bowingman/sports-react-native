@@ -23,7 +23,7 @@ export default class WelcomeScreen extends Component {
                 name: team.name,
                 logo: team.logo,
                 manager: team.manager,
-                stadiumName: team.stadium,
+                stadium: team.stadium,
               }
             }),
           ],

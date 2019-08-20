@@ -1,6 +1,24 @@
 import React, { Component } from 'react';
 import { Alert, AsyncStorage, View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import TeamRow from '../components/TeamRow';
+import CountdownTimer from '../components/CountdownTimer';
+
+// Calculate the ms until the next game on a given day and time strings
+const msUntilNextGame = (day, time) => {
+  const future = Date.parse(`${day} ${time} EST`);
+  return future - new Date();
+}
+
+// Cleanup API response to be a more JS-friendly date format
+// 2019-08-22 => 22 Aug 2019
+const jsFriendlyDate = (dateStr) => {
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  const [ year, month, day ] = dateStr.split('-');
+  let monthNo = parseInt(month);
+  return `${day} ${monthNames[monthNo - 1]} ${year}`;
+}
 
 const styles = StyleSheet.create({
   heading: {
@@ -14,7 +32,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10
   },
 });
-
 export default class TeamDetailScreen extends Component {
   static navigationOptions = {
     title: 'Team Details',
@@ -27,7 +44,7 @@ export default class TeamDetailScreen extends Component {
     const name = nav.getParam('name', 'No name found');
     const logo = nav.getParam('logo', 'No logo found');
     const manager = nav.getParam('manager', 'No manager found');
-    const stadiumName = nav.getParam('stadiumName', 'No stadium found');
+    const stadium = nav.getParam('stadium', 'No stadium found');
     this.state = { 
       isLoadingNextGame: true,
       isLoadingFavorite: true,
@@ -35,7 +52,7 @@ export default class TeamDetailScreen extends Component {
       name,
       logo,
       manager,
-      stadiumName,
+      stadium,
       isFavorite: false,
     };
   }
@@ -70,8 +87,8 @@ export default class TeamDetailScreen extends Component {
   }
 
   onFavorite = () => {
-    const { id, name, logo, manager, stadiumName, isFavorite } = this.state;
-    const favorite = { id, name, logo, manager, stadiumName };
+    const { id, name, logo, manager, stadium, isFavorite } = this.state;
+    const favorite = { id, name, logo, manager, stadium };
 
     // If this team is not the active favorite, make it the favorite
     if (!isFavorite) { 
@@ -92,12 +109,13 @@ export default class TeamDetailScreen extends Component {
         </View>
       );
     }
-    const { id, data, name, logo, manager, stadiumName, isFavorite } = this.state;
+    const { id, data, name, logo, manager, stadium, isFavorite } = this.state;
     const isHome = data.idHomeTeam === id;
     const location = isHome ? 'Home' : 'Away';
     const opponentName = isHome ? data.strAwayTeam : data.strHomeTeam;
-    const date = new Date(data.dateEvent);
-    const dateStr = date.toDateString();
+    const dateStr = data.dateEvent;
+    const jsDate = jsFriendlyDate(dateStr);
+    const time = data.strTime;
     return (
         <View>
             <TeamRow 
@@ -113,11 +131,13 @@ export default class TeamDetailScreen extends Component {
             <Text style={styles.name}>{manager}</Text>
 
             <Text style={styles.heading}>Stadium</Text>
-            <Text style={styles.name}>{stadiumName}</Text>
+            <Text style={styles.name}>{stadium}</Text>
 
             <Text style={styles.heading}>Next Game</Text>
             <Text style={styles.name}>{location} vs the {opponentName}</Text>
             <Text style={styles.name}>{dateStr}</Text>
+            <Text style={styles.heading}>Game Time Countdown</Text>
+            <CountdownTimer textStyle={styles.name} time={msUntilNextGame(jsDate, time)}></CountdownTimer>
         </View>
     );
   }
