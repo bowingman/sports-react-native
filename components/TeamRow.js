@@ -46,7 +46,7 @@ export default class TeamRow extends Component {
   }
 
   render() {
-    let icon = <View style={styles.iconPlacement}><Ionicons style={styles.icon} size={36} name='ios-arrow-forward' /></View>
+    let icon = <View style={styles.iconPlacement}><Ionicons style={styles.icon} color='gray' size={36} name='ios-arrow-forward' /></View>
     if (this.state.showFavoriteIcon) {
       icon = (
         <FavoriteButton
