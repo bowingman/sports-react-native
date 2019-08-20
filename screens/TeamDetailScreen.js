@@ -73,11 +73,11 @@ export default class TeamDetailScreen extends Component {
     const { id, name, logo, manager, stadiumName, isFavorite } = this.state;
     const favorite = { id, name, logo, manager, stadiumName };
 
-    // If this team is not your favorite, make it your favorite
+    // If this team is not the active favorite, make it the favorite
     if (!isFavorite) { 
       Alert.alert('Success', `You have set the ${name} as your favorite team`);
       AsyncStorage.setItem('favoriteTeam', JSON.stringify(favorite));
-    } else { // Otherwise, remove it as your favorite
+    } else { // Otherwise, remove it as the favorite
       Alert.alert('Success', `The ${name} is no longer your favorite team`);
       AsyncStorage.removeItem('favoriteTeam');
     }
