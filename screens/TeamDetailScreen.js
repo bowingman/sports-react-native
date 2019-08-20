@@ -5,19 +5,17 @@ import CountdownTimer from '../components/CountdownTimer';
 
 // Calculate the ms until the next game on a given day and time strings
 const msUntilNextGame = (day, time) => {
-  const future = Date.parse(`${day} ${time} EST`);
+  const future = Date.parse(`${day} ${time} EST`); // (Hardcoding in timezone of EST)
   return future - new Date();
 }
 
-// Cleanup API response to be a more JS-friendly date format
+// Cleanup API response to be a more JS-friendly date format for Date.parse()
 // 2019-08-22 => 22 Aug 2019
 const jsFriendlyDate = (dateStr) => {
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-  ];
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const [ year, month, day ] = dateStr.split('-');
-  let monthNo = parseInt(month);
-  return `${day} ${monthNames[monthNo - 1]} ${year}`;
+  return `${day} ${monthNames[parseInt(month) - 1]} ${year}`;
 }
 
 const styles = StyleSheet.create({

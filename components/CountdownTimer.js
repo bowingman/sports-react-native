@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-// const getTimeString = (t) => new Date(t).toISOString();      
+// Convert milliseconds to hours:mins:seconds
 const getTimeString = (ms) => {
   if (ms <= 0) {
     return '00:00:00';
