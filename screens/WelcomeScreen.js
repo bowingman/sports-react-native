@@ -4,19 +4,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 
 export default class WelcomeScreen extends Component {
 
-
   componentDidMount() {
-    /* TODO: Move this to DetailScreen */
-    const favorite = {
-      idTeam: 134946,
-      strTeam: 'Cardinals',
-      strTeamBadge: 'https://www.thesportsdb.com/images/media/team/badge/xvuwtw1420646838.png',
-      strManager: 'Kliff Kingsbury',
-      strStadium: 'State Farm Stadium',
-    };
-    AsyncStorage.setItem('favoriteTeam', JSON.stringify(favorite)); 
-    /* */
-
     AsyncStorage.getItem('favoriteTeam', (err, result) => {
       if (result !== null) {
         const team = JSON.parse(result);
@@ -31,11 +19,11 @@ export default class WelcomeScreen extends Component {
             NavigationActions.navigate({
               routeName: 'Details', 
               params: {
-                id: team.idTeam,
-                name: team.strTeam,
-                logo: team.strTeamBadge,
-                manager: team.strManager,
-                stadiumName: team.strStadium,
+                id: team.id,
+                name: team.name,
+                logo: team.logo,
+                manager: team.manager,
+                stadiumName: team.stadium,
               }
             }),
           ],

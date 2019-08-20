@@ -16,6 +16,7 @@ export default class FavoriteButton extends Component {
 
   onPress = () => {
     this.setState({ active: !this.state.active });
+    this.props.onFavorite();
   }
 
   render() {

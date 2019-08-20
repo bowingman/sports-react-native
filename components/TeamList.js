@@ -51,7 +51,7 @@ export default class TeamList extends Component {
           data={this.state.dataSource}
           renderItem={({item}) => (
             <TouchableOpacity onPress={this.onPress.bind(this, item)}>
-              <TeamRow logoURL={item.strTeamBadge} name={item.strTeam}></TeamRow>
+              <TeamRow logoURL={item.strTeamBadge} name={item.strTeam} showFavoriteIcon={false}></TeamRow>
             </TouchableOpacity>
             )
           }
