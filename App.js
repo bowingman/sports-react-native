@@ -1,14 +1,18 @@
+import React from 'react';
+import {TouchableHighlight,Button} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
-import HomeScreen from './screens/HomeScreen.js';
-import TeamDetailScreen from './screens/TeamDetailScreen.js';
+import HomeScreen from './screens/HomeScreen';
+import TeamDetailScreen from './screens/TeamDetailScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
 
 const MainNavigator = createStackNavigator(
   {
     Home: {screen: HomeScreen},
-    Details: {screen: TeamDetailScreen}
+    Details: {screen: TeamDetailScreen},
+    Welcome: {screen: WelcomeScreen}
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: 'Welcome',
   }
 );
 

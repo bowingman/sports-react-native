@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import TeamList from '../components/TeamList.js';
+import { AsyncStorage, View, StyleSheet } from 'react-native';
+import TeamList from '../components/TeamList';
 
 const styles = StyleSheet.create({
   bg: {
@@ -12,7 +12,9 @@ const styles = StyleSheet.create({
 export default class HomeScreen extends Component {
   static navigationOptions = {
     title: 'NFL Teams',
+    headerLeft: null,
   };
+
   render() {
     return (
       <View style={styles.bg}>

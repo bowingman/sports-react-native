@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TeamRow from './TeamRow.js'
+import TeamRow from './TeamRow'
 import { ActivityIndicator, FlatList, ScrollView, View, TouchableOpacity } from 'react-native';
 
 export default class TeamList extends Component {
@@ -49,7 +49,12 @@ export default class TeamList extends Component {
       <ScrollView>
         <FlatList
           data={this.state.dataSource}
-          renderItem={({item}) => <TouchableOpacity onPress={this.onPress.bind(this, item)}><TeamRow logoURL={item.strTeamBadge} name={item.strTeam}></TeamRow></TouchableOpacity>}
+          renderItem={({item}) => (
+            <TouchableOpacity onPress={this.onPress.bind(this, item)}>
+              <TeamRow logoURL={item.strTeamBadge} name={item.strTeam} showFavoriteIcon={false}></TeamRow>
+            </TouchableOpacity>
+            )
+          }
           keyExtractor={({idTeam}, index) => idTeam}
         />
       </ScrollView>
