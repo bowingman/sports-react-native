@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Alert, AsyncStorage, View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import TeamRow from '../components/TeamRow';
 import CountdownTimer from '../components/CountdownTimer';
+import PlayerList from '../components/PlayerList';
 
 // Calculate the ms until the next game on a given day and time strings
 const msUntilNextGame = (day, time) => {
@@ -19,6 +20,9 @@ const jsFriendlyDate = (dateStr) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   heading: {
     color: '#777777',
     fontSize: 16,
@@ -74,12 +78,12 @@ export default class TeamDetailScreen extends Component {
 
       this.setState({
         isLoadingNextGame: false,
-        data: responseJson.events[0],
+        gameData: responseJson.events[0],
       }, function(){
       });
 
       })
-      .catch((error) =>{
+      .catch((error) => {
         console.error(error);
       });
   }
@@ -90,10 +94,10 @@ export default class TeamDetailScreen extends Component {
 
     // If this team is not the active favorite, make it the favorite
     if (!isFavorite) { 
-      Alert.alert('Success', `You have set the ${name} as your favorite team`);
+      Alert.alert('Team Favorited', `You have set the ${name} as your favorite team`);
       AsyncStorage.setItem('favoriteTeam', JSON.stringify(favorite));
     } else { // Otherwise, remove it as the favorite
-      Alert.alert('Success', `The ${name} is no longer your favorite team`);
+      Alert.alert('Team Unfavorited', `The ${name} is no longer your favorite team`);
       AsyncStorage.removeItem('favoriteTeam');
     }
   }
@@ -107,15 +111,15 @@ export default class TeamDetailScreen extends Component {
         </View>
       );
     }
-    const { id, data, name, logo, manager, stadium, isFavorite } = this.state;
-    const isHome = data.idHomeTeam === id;
+    const { id, gameData, name, logo, manager, stadium, isFavorite } = this.state;
+    const isHome = gameData.idHomeTeam === id;
     const location = isHome ? 'Home' : 'Away';
-    const opponentName = isHome ? data.strAwayTeam : data.strHomeTeam;
-    const dateStr = data.dateEvent;
+    const opponentName = isHome ? gameData.strAwayTeam : gameData.strHomeTeam;
+    const dateStr = gameData.dateEvent;
     const jsDate = jsFriendlyDate(dateStr);
-    const time = data.strTime;
+    const time = gameData.strTime;
     return (
-        <View>
+        <View style={styles.container}>
             <TeamRow 
               style={styles.row}
               logoURL={logo}
@@ -135,7 +139,21 @@ export default class TeamDetailScreen extends Component {
             <Text style={styles.name}>{location} vs the {opponentName}</Text>
             <Text style={styles.name}>{dateStr}</Text>
             <Text style={styles.heading}>Game Time Countdown</Text>
+
             <CountdownTimer textStyle={styles.name} time={msUntilNextGame(jsDate, time)}></CountdownTimer>
+            <View
+              style={{
+                paddingTop: 5,
+                borderBottomColor: '#cccccc',
+                borderBottomWidth: 1,
+              }}
+            />
+            {/* <Text style={styles.heading}>Roster</Text> */}
+            <PlayerList
+              teamId={id}
+              onFavorite={() => {}}
+            >
+            </PlayerList>
         </View>
     );
   }

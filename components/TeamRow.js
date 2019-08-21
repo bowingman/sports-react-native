@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Ionicons } from '@expo/vector-icons';
 
 import FavoriteButton from './FavoriteButton';
-// ios-arrow-forward
 
 const styles = StyleSheet.create({
   row: {
@@ -33,15 +32,15 @@ const styles = StyleSheet.create({
 export default class TeamRow extends Component {
   constructor(props) {
     super(props);
-    if (this.props.showFavoriteIcon) {
-      this.state = {
-        showFavoriteIcon: this.props.showFavoriteIcon,
-      }
-      return;
-    }
-    // By default, don't show the favorite icon
-    this.state = {
-      showFavoriteIcon: false,
+    if (this.props.showFavoriteIcon) {	
+      this.state = {	
+        showFavoriteIcon: this.props.showFavoriteIcon,	
+      }	
+      return;	
+    }	
+    // By default, don't show the favorite icon	
+    this.state = {	
+      showFavoriteIcon: false,	
     }
   }
 
@@ -74,4 +73,5 @@ TeamRow.propTypes = {
   name: PropTypes.string,
   logoURL: PropTypes.string,
   showFavoriteIcon: PropTypes.bool,
+  onFavorite: PropTypes.func,
 };
