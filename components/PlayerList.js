@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import PlayerRow from './PlayerRow'
-import { ActivityIndicator, AsyncStorage, FlatList, ScrollView, View } from 'react-native';
+import { AsyncStorage, FlatList, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
+import Loading from './Loading';
 
 export default class PlayerList extends Component {
   constructor(props) {
     super(props);
-    this.state = { isLoadingPlayerData: true, isLoadingFavorites: true };
+    this.state = { isLoadingPlayerData: true, isLoadingFavorites: true, favorites: [] };
   }
 
   componentDidMount() {
-
-    // Load favorited players
-    AsyncStorage.getItem('favoritedPlayers', (err, result) => {
+    // Load favorited players to highlight in list from storage
+    AsyncStorage.getItem('favoritePlayers', (err, result) => {
       if (result !== null) {
         this.setState({ isLoadingFavorites: false, favorites: JSON.parse(result) });
       } else {
@@ -37,34 +37,29 @@ export default class PlayerList extends Component {
       });
   }
 
-  onPress = (player) => {
-    const favorites = this.state.favorites;
-    let newFavorites = [];
-    if (favorites.length > 0) {
-      newFavorites = [ ...favorites]; // Copy favorites array
-    }
+  // Handle saving player object to persisted storage
+  onEnable = (player) => {
+    const newFavs = [...this.state.favorites, player];
+    this.setState({ favorites: newFavs });
+    AsyncStorage.setItem('favoritePlayers', JSON.stringify(newFavs));
+  }
 
-    // If player is not favorited, favorite it
-    const index = favorites.indexOf(player);
-    if (index > -1) {
-      newFavorites.splice(index, 1);
-    } else {
-      newFavorites.push(player);
-    }
+  // Handle removing player object to persisted storage
+  onDisable = (player) => {
+    const newFavs = [...this.state.favorites].filter(p => p.idPlayer !== player.idPlayer);
+    this.setState({ favorites: newFavs });
+    AsyncStorage.setItem('favoritePlayers', JSON.stringify(newFavs));
+  }
 
-    // Save this to change to persisted storage
-    this.setState({ favorites: newFavorites });
-    AsyncStorage.setItem('favoritedPlayers', JSON.stringify(newFavorites));
+  // Return a bool if player is in favorites list
+  playerExistsInFavorites = (player) => {
+    return this.state.favorites.some(p => p.idPlayer === player.idPlayer)
   }
 
   render() {
     const isLoading = this.state.isLoadingFavorites || this.state.isLoadingPlayerData;
     if (isLoading) {
-      return (
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
-        </View>
-      );
+      return <Loading />
     }
 
     return (
@@ -73,11 +68,13 @@ export default class PlayerList extends Component {
           data={this.state.dataSource}
           renderItem={({item}) => (
             <PlayerRow
-              active={this.state.favorites.includes(item.strPlayer)}
+              player={item}
+              active={this.playerExistsInFavorites(item)}
               logoURL={item.strThumb}
               onFavorite={this.props.onFavorite}
               name={item.strPlayer}
-              onPress={this.onPress}
+              onEnable={this.onEnable}
+              onDisable={this.onDisable}
               position={item.strPosition}
             >
             </PlayerRow>

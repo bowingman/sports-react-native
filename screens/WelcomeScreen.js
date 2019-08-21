@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, AsyncStorage, View } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
+import Loading from  '../components/Loading';
 
+// This welcome/loading/splash screen handles initial redirection to the user's favorite team page/home page
 export default class WelcomeScreen extends Component {
-
   componentDidMount() {
     AsyncStorage.getItem('favoriteTeam', (err, result) => {
       if (result !== null) {
@@ -40,10 +41,6 @@ export default class WelcomeScreen extends Component {
   }
 
   render() {
-    return (
-      <View style={{flex: 1, padding: 20}}>
-        <ActivityIndicator/>
-      </View>
-    );
+    return <Loading />;
   }
 }

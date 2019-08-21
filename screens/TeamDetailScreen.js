@@ -3,6 +3,7 @@ import { Alert, AsyncStorage, View, Text, ActivityIndicator, StyleSheet } from '
 import TeamRow from '../components/TeamRow';
 import CountdownTimer from '../components/CountdownTimer';
 import PlayerList from '../components/PlayerList';
+import Loading from '../components/Loading';
 
 // Calculate the ms until the next game on a given day and time strings
 const msUntilNextGame = (day, time) => {
@@ -20,6 +21,11 @@ const jsFriendlyDate = (dateStr) => {
 }
 
 const styles = StyleSheet.create({
+  border: {
+    paddingTop: 5,
+    borderBottomColor: '#cccccc',
+    borderBottomWidth: 1,
+  },
   container: {
     flex: 1,
   },
@@ -94,10 +100,10 @@ export default class TeamDetailScreen extends Component {
 
     // If this team is not the active favorite, make it the favorite
     if (!isFavorite) { 
-      Alert.alert('Team Favorited', `You have set the ${name} as your favorite team`);
+      Alert.alert('Favorited', `You have set the ${name} as your favorite team`);
       AsyncStorage.setItem('favoriteTeam', JSON.stringify(favorite));
     } else { // Otherwise, remove it as the favorite
-      Alert.alert('Team Unfavorited', `The ${name} is no longer your favorite team`);
+      Alert.alert('Unfavorited', `The ${name} is no longer your favorite team`);
       AsyncStorage.removeItem('favoriteTeam');
     }
   }
@@ -105,11 +111,7 @@ export default class TeamDetailScreen extends Component {
   render() {
     const isLoading = this.state.isLoadingNextGame || this.state.isLoadingFavorite;
     if (isLoading) {
-      return (
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
-        </View>
-      );
+      return <Loading />
     }
     const { id, gameData, name, logo, manager, stadium, isFavorite } = this.state;
     const isHome = gameData.idHomeTeam === id;
@@ -141,14 +143,7 @@ export default class TeamDetailScreen extends Component {
             <Text style={styles.heading}>Game Time Countdown</Text>
 
             <CountdownTimer textStyle={styles.name} time={msUntilNextGame(jsDate, time)}></CountdownTimer>
-            <View
-              style={{
-                paddingTop: 5,
-                borderBottomColor: '#cccccc',
-                borderBottomWidth: 1,
-              }}
-            />
-            {/* <Text style={styles.heading}>Roster</Text> */}
+            <View style={styles.border} />
             <PlayerList
               teamId={id}
               onFavorite={() => {}}
