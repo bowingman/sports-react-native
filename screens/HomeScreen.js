@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, View, StyleSheet } from 'react-native';
+import { Button, View, StyleSheet } from 'react-native';
 import TeamList from '../components/TeamList';
 
 const styles = StyleSheet.create({
@@ -10,9 +10,18 @@ const styles = StyleSheet.create({
 });
 
 export default class HomeScreen extends Component {
-  static navigationOptions = {
-    title: 'NFL Teams',
-    headerLeft: null,
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'NFL Teams',
+      headerRight: (
+        <Button
+          onPress={() => navigation.navigate('FavoritePlayers')}
+          title='Favorites'
+          color='black'
+        >
+        </Button>
+      ),
+    }
   };
 
   render() {

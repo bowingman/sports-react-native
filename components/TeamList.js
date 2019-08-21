@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TeamRow from './TeamRow'
 import { ActivityIndicator, FlatList, ScrollView, View, TouchableOpacity } from 'react-native';
+import Loading from './Loading';
 
 export default class TeamList extends Component {
   constructor(props) {
@@ -38,11 +39,7 @@ export default class TeamList extends Component {
 
   render() {
     if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
-        </View>
-      );
+      return <Loading />
     }
 
     return (

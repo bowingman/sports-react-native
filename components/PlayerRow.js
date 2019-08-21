@@ -53,21 +53,34 @@ export default class PlayerRow extends Component {
 
   onPress = () => {
     this.setState({ active: !this.state.active });
-    this.props.onPress(this.props.name);
+    if (this.state.active) {
+      this.props.onDisable(this.props.player);
+      return;
+    }
+    this.props.onEnable(this.props.player);
   }
 
   render() {
-    return (
-      <TouchableOpacity onPress={this.onPress.bind(this)}>
-        <View style={this.state.active ? styles.activeRow : styles.row}>
-          <Image
-            style={styles.image}
-            source={{uri: this.props.logoURL}}
-          />
-          <Text style={styles.name}>{this.props.name}</Text>
-          <Text style={styles.position}>|</Text>
-          <Text style={styles.position}>{this.props.position}</Text>
+    const content = (
+      <View style={this.state.active ? styles.activeRow : styles.row}>
+        <Image
+          style={styles.image}
+          source={{uri: this.props.logoURL}}
+        />
+        <Text style={styles.name}>{this.props.name}</Text>
+        <Text style={styles.position}>|</Text>
+        <Text style={styles.position}>{this.props.position}</Text>
+      </View>
+    );
+    if (this.props.disabled) {
+      return (
+        <View>
+          {content}
         </View>
+      );
+    } return (
+      <TouchableOpacity onPress={this.onPress.bind(this)}>
+        {content}
       </TouchableOpacity>
     );
   }
@@ -76,7 +89,9 @@ export default class PlayerRow extends Component {
 PlayerRow.propTypes = {
   active: PropTypes.bool,
   name: PropTypes.string,
+  player: PropTypes.object,
   position: PropTypes.string,
   logoURL: PropTypes.string,
-  onFavorite: PropTypes.func.isRequired,
+  // onPress: PropTypes.func,
+  disabled: PropTypes.bool,
 };
