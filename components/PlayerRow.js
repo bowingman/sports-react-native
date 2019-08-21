@@ -92,6 +92,7 @@ PlayerRow.propTypes = {
   player: PropTypes.object,
   position: PropTypes.string,
   logoURL: PropTypes.string,
-  // onPress: PropTypes.func,
+  onDisable: PropTypes.func,
+  onEnable: PropTypes.func,
   disabled: PropTypes.bool,
 };
