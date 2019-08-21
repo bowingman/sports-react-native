@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Image, Text, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-
-import FavoriteButton from './FavoriteButton';
 
 const styles = StyleSheet.create({
   row: {
     backgroundColor: 'white',
+    flexDirection: 'row',
+    paddingLeft: 5,
+  },
+  activeRow: {
+    backgroundColor: 'gold',
     flexDirection: 'row',
     paddingLeft: 5,
   },
@@ -26,44 +29,54 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginLeft: 10,
   },
+  position: {
+    color: 'gray',
+    fontSize: 14,
+    marginTop: 20,
+    paddingLeft: 2,
+  }
 });
 
 export default class PlayerRow extends Component {
   constructor(props) {
     super(props);
-    if (this.props.showFavoriteIcon) {
+    if (this.props.active !== null) {
       this.state = {
-        showFavoriteIcon: this.props.showFavoriteIcon,
+        active: this.props.active,
       }
       return;
     }
-    // By default, don't show the favorite icon
     this.state = {
-      showFavoriteIcon: false,
-    }
+      active: false,
+    };
+  }
+
+  onPress = () => {
+    this.setState({ active: !this.state.active });
+    this.props.onPress(this.props.name);
   }
 
   render() {
     return (
-        <View style={styles.row}>
+      <TouchableOpacity onPress={this.onPress.bind(this)}>
+        <View style={this.state.active ? styles.activeRow : styles.row}>
           <Image
             style={styles.image}
             source={{uri: this.props.logoURL}}
           />
           <Text style={styles.name}>{this.props.name}</Text>
-          <FavoriteButton
-            active={this.props.iconActive}
-            placementStyle={styles.iconPlacement}
-            iconStyle={styles.icon}
-            onFavorite={this.props.onFavorite}
-          />
+          <Text style={styles.position}>|</Text>
+          <Text style={styles.position}>{this.props.position}</Text>
         </View>
+      </TouchableOpacity>
     );
   }
 }
 
 PlayerRow.propTypes = {
+  active: PropTypes.bool,
   name: PropTypes.string,
+  position: PropTypes.string,
   logoURL: PropTypes.string,
-  onFavorite: PropTypes.func,
+  onFavorite: PropTypes.func.isRequired,
 };

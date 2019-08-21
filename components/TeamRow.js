@@ -32,6 +32,16 @@ const styles = StyleSheet.create({
 export default class TeamRow extends Component {
   constructor(props) {
     super(props);
+    if (this.props.showFavoriteIcon) {	
+      this.state = {	
+        showFavoriteIcon: this.props.showFavoriteIcon,	
+      }	
+      return;	
+    }	
+    // By default, don't show the favorite icon	
+    this.state = {	
+      showFavoriteIcon: false,	
+    }
   }
 
   render() {
