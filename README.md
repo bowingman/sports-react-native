@@ -16,7 +16,7 @@ Some data is "N/A" in the API, such as the manager of the Bengals. I implemented
 
 ## Demo
 
-![](demo.gif)
+![](demo2.gif)
 
 
 Author: Dan Perlman for SportTrade. 2019.
