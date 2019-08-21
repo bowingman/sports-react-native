@@ -94,10 +94,10 @@ export default class TeamDetailScreen extends Component {
 
     // If this team is not the active favorite, make it the favorite
     if (!isFavorite) { 
-      Alert.alert('Success', `You have set the ${name} as your favorite team`);
+      Alert.alert('Team Favorited', `You have set the ${name} as your favorite team`);
       AsyncStorage.setItem('favoriteTeam', JSON.stringify(favorite));
     } else { // Otherwise, remove it as the favorite
-      Alert.alert('Success', `The ${name} is no longer your favorite team`);
+      Alert.alert('Team Unfavorited', `The ${name} is no longer your favorite team`);
       AsyncStorage.removeItem('favoriteTeam');
     }
   }
